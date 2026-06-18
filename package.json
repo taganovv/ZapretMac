@@ -1,0 +1,48 @@
+{
+  "name": "zapret-mac",
+  "version": "1.0.0",
+  "description": "Обход блокировок YouTube для macOS — GUI-обёртка над zapret (tpws)",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "download-binaries": "node scripts/download-binaries.js",
+    "build": "bash scripts/render-icons.sh && electron-builder --mac",
+    "build:dir": "bash scripts/render-icons.sh && electron-builder --mac --dir",
+    "icons": "bash scripts/render-icons.sh"
+  },
+  "keywords": ["zapret", "youtube", "dpi", "macos"],
+  "author": "taganovv",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.1.0",
+    "electron-builder": "^26.7.0"
+  },
+  "dependencies": {
+    "sudo-prompt": "^9.2.1"
+  },
+  "build": {
+    "appId": "com.zapret.mac",
+    "productName": "ZapretMac",
+    "directories": { "output": "dist" },
+    "files": ["src/**/*", "assets/**/*"],
+    "extraResources": [
+      { "from": "resources/zapret-runtime", "to": "zapret-runtime", "filter": ["**/*"] }
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "icon": "assets/icon.png",
+      "target": [
+        { "target": "dmg", "arch": ["arm64"] },
+        { "target": "zip", "arch": ["arm64"] },
+        { "target": "dir", "arch": ["arm64"] }
+      ],
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "artifactName": "ZapretMac-${version}-mac-${arch}.${ext}"
+    },
+    "dmg": {
+      "title": "ZapretMac"
+    }
+  }
+}
